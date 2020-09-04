@@ -1,5 +1,0 @@
-# Color-Bot
-
-## Usage
-
-## Installation
