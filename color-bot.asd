@@ -8,7 +8,8 @@
                "cl-ppcre"
                "drakma"
                "uiop"
-               "cl-telegram-bot")
+               "cl-telegram-bot"
+               "flexi-streams")
   :components ((:module "src"
                 :components
                 ((:file "main"))))
