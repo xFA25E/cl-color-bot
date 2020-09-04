@@ -1,6 +1,8 @@
-#+TITLE: Color Bot
+* Color-Bot
+  A telegram bot that sends pictures of colors. Made with +love+ common-lisp
 
-A telegram bot that sends pictures of colors. Made with +love+ common-lisp
-* Usage
-  Set =TELEGRAM_BOT_TOKEN= environment variable to your token. Also, it depends
-  on sbcl and [[https://github.com/sovietspaceship/cl-telegram-bot][cl-telegram-bot]]
+** Usage
+   Set =TELEGRAM_BOT_TOKEN= environment variable to your token. Also, it depends on sbcl
+   and [[https://github.com/sovietspaceship/cl-telegram-bot][cl-telegram-bot]]
+
+** Installation

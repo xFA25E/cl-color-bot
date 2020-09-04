@@ -1,2 +1,3 @@
-* TODO use equalp instead of equal
-* TODO serialization of cache
+* DONE use equalp instead of equal
+* DONE serialization of cache
+* DONE make in memory file
