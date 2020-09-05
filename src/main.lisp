@@ -285,7 +285,7 @@
 
 (defun start-bot ()
   (setq *stop-bot* nil)
-  (loop :with bot = (make-bot (uiop:getenv "TELEGRAM_BOT_TOKEN"))
+  (loop :with bot = (make-bot *bot-token*)
         :until *stop-bot* :do
           (loop :for update :across (get-updates bot)
                 :do (respond-to-update bot update))

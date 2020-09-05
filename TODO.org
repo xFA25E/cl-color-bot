@@ -1,3 +1,4 @@
 * DONE use equalp instead of equal
 * DONE serialization of cache
 * DONE make in memory file
+* TODO try ecl
