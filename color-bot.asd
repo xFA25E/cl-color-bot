@@ -9,7 +9,8 @@
                "drakma"
                "uiop"
                "cl-telegram-bot"
-               "flexi-streams")
+               "flexi-streams"
+               "cl-arrows")
   :components ((:module "src"
                 :components
                 ((:file "main"))))

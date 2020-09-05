@@ -254,13 +254,14 @@
                     :method :post
                     :parameters `(("chat_id" . ,(write-to-string chat-id))
                                   ("photo" . ,photo))
-                    :form-data t))
-         (json (decode-json-from-string (map 'string #'code-char response))))
-
-    (flet ((get-body (akey) (setq json (cdr (assoc akey json)))))
-      (get-body 'result)
-      (setq json (first (get-body 'photo)))
-      (get-body 'file--id))))
+                    :form-data t)))
+    (cl-arrows:->>
+     (decode-json-from-string (map 'string #'code-char response))
+     (assoc 'result)
+     cdr
+     (assoc 'photo)
+     cadr
+     (assoc 'file--id))))
 
 (defun send-picture (bot chat-id hex-color)
   (if-let ((photo-id (get-photo-id hex-color)))
