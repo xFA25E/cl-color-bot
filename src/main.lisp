@@ -1,13 +1,23 @@
 (defpackage color-bot
   (:use :cl)
   (:import-from #:cl-telegram-bot
-   :make-bot :get-updates :send-message :send-photo :access :endpoint)
+                #:make-bot
+                #:get-updates
+                #:send-message
+                #:send-photo
+                #:access
+                #:endpoint)
   (:import-from #:drakma :http-request)
   (:import-from #:alexandria
-   :when-let :if-let :hash-table-keys :hash-table-alist :alist-hash-table)
-  (:import-from #:cl-ppcre :create-scanner :scan-to-strings :regex-replace)
-  (:import-from #:cl-json :decode-json-from-string)
-  (:import-from #:zpng :start-png :write-pixel :finish-png :pixel-streamed-png))
+                #:when-let
+                #:if-let
+                #:hash-table-keys
+                #:hash-table-alist
+                #:alist-hash-table)
+  (:import-from #:cl-ppcre #:create-scanner #:scan-to-strings #:regex-replace)
+  (:import-from #:cl-json #:decode-json-from-string)
+  (:import-from #:zpng #:start-png #:write-pixel #:finish-png #:pixel-streamed-png)
+  (:export #:main #:start-bot #:stop-bot))
 (in-package :color-bot)
 
 (defparameter *cached-photos-filename* #p"cached-photos.lisp")
@@ -269,13 +279,25 @@
       (send-picture bot chat-id hex-color)
       (send-message bot chat-id "Cant get color"))))
 
-(let ((stop-bot nil))
-  (defun stop-bot () (setq stop-bot t))
+(defparameter *stop-bot* nil)
 
-  (defun start-bot ()
-    (setq stop-bot nil)
-    (loop :with bot = (make-bot (uiop:getenv "TELEGRAM_BOT_TOKEN"))
-          :until stop-bot :do
-            (loop :for update :across (get-updates bot)
-                  :do (respond-to-update bot update))
-            (sleep 2))))
+(defun stop-bot () (setq *stop-bot* t))
+
+(defun start-bot ()
+  (setq *stop-bot* nil)
+  (loop :with bot = (make-bot (uiop:getenv "TELEGRAM_BOT_TOKEN"))
+        :until *stop-bot* :do
+          (loop :for update :across (get-updates bot)
+                :do (respond-to-update bot update))
+          (sleep 2)))
+
+(defun main ()
+  (handler-case (start-bot)
+    (#+sbcl sb-sys:interactive-interrupt
+     #+ccl  ccl:interrupt-signal-condition
+     #+clisp system::simple-interrupt-condition
+     #+ecl ext:interactive-interrupt
+     #+allegro excl:interrupt-signal
+     () (progn
+          (format *error-output* "Abort.~&")
+          (uiop:quit)))))
